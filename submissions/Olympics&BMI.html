@@ -1,0 +1,139 @@
+Olympics and BMI
+Lukas Böer (2635763) / Georg Helzer (2291083) / David Sauer (2564209)
+2025-08-19
+Data
+Olympics dataset
+Food consumption dataset
+Data Analysis
+Hypothesis
+Confirmatory Analysis
+Discussion
+Conclusion
+Limitations & Outlook
+Data
+Our analysis is based on a dataset from 2021-07-27’s TidyTuesday containing all Olympic athletes through the years with their respective heigth and weight, as well as the sport they competed in. To answer our hypotheses we merged it with the 2020-02-18’s TidyTuesday dataset on food consumption in 130 countries.
+
+Olympics dataset
+The following variables are listed in the dataset:
+
+id
+name
+sex
+age
+height
+weight
+team
+noc
+games
+year
+season
+city
+sport
+event
+medal
+From the variables “height” and “weight”, we calculated the new variable “bmi” as weight / (height/100)^2). In order to merge with the other dataset on the basis of countries we took the variable “team” and named the countries (because of geopolitical/historical indifferences) accordingly because it represented the category “country” better than “noc” (national olympic committee). So afterall there were all the follwoing variables:
+
+id
+name
+sex
+age
+height
+weight
+team
+noc
+games
+year
+season
+city
+sport
+event
+medal
+bmi
+standard
+country_standardized
+Food consumption dataset
+The following variables are listed in the dataset:
+
+country
+food_category
+consumption
+co2_emmission
+The variables consumption and co2_emmission are given in kg/year/person, whereas the variable “food_category” represents the following values:
+
+Pork
+Poultry
+Beef
+Lamb & Goat
+Fish
+Eggs
+Milk - inc. cheese
+Wheat and Wheat Products
+Rice
+Soybeans
+Nuts inc. Peanut Butter
+Before merging the two datasets, we grouped the average (animal) protein consumption per capita as the combination of “Pork”, “Poultry”, Beef”, “Lamb & Goat”, “Fish”, “Eggs” and “Milk - inc. cheese”. This resulted in the dataset only being two variables left:
+
+country
+avg_protein
+Data Analysis
+Hypothesis
+We hypothesize that a countries consumption of animal protein per capita is positively associated with the BMI of their Athletes at the Olympics. This realtionship is even clearer in strength sports and negative in endurance sports.
+
+This hypothesis is based on the assumption that higher availability of animal protein provides essential nutrients for muscle growth, recovery, and overall energy balance, contributing to higher BMI among athletes. In strength and power sports, greater protein intake supports muscle hypertrophy and training adaptations, making the positive association clearer, while in endurance sports lower body mass is often advantageous for efficiency, leading to a weaker or even negative relationship. National dietary patterns also reflect broader socioeconomic factors, as wealthier countries with higher protein availability often have better sports infrastructure and talent development systems. Finally, existing research in nutrition and sports physiology supports this logic, showing that strength athletes require more protein than endurance athletes and that cross-country differences in diet align with observed Olympic performance patterns.
+
+Confirmatory Analysis
+In order to test this hypothesis we ran a linear regression model with the input variables mean bmi per country and animal protein consumption per capita. Results show a significant positive association: for each one-point increase in mean BMI, average protein intake rises by approximately 7.8 grams per person per day (p < 0.001). While the effect is statistically robust, the explanatory power is limited (Adjusted R² ≈ 0.12), indicating that BMI accounts for only a modest share of the variation in national protein consumption. For further information on the model check out the comparison table at the end of the section.
+
+
+
+The second part of our hypothesis stated that the relationship between bmi and animal protein consumption per capita would be even higher for strength sports and lower for endurance sports. Therefore we grouped the sports accordingly to what we’ve learned in our sports science degree. Strength plays a major role in “Judo”, “Tug-of-War”, “Ice Hockey”, “Handball”, “Weightlifting”, “Wrestling”, “Water Polo”, “Boxing”, “Taekwondo”, “Rugby Sevens”, “Softball”, “Baseball” and “Basketball” whereas endurance plays a major role in “Speed Skating”, “Cross Country Skiing”, “Athletics”, “Biathlon”, “Rowing”, “Cycling”, “Triathlon”, “Nordic Combined” and “Military Ski Patrol”.
+
+Results for the strength sports model indicate a significant positive association: for each one-point increase in mean BMI, average protein intake rises by about 5.1 kg/year/person (p < 0.001). With 125 observations, the effect is statistically robust, though the explanatory power is only moderate (Adjusted R² ≈ 0.204; R² = 0.210), showing that BMI explains part of the variation in protein consumption among strength-sport populations. For further details, see the comparison table at the end of the section.
+
+
+
+Results for the endurance sports model reveal a significant positive association: for each one-point increase in mean BMI, average protein intake increases by about 6.6 kg/year/person (p < 0.001). Based on 128 observations, the effect is statistically robust, but the explanatory power remains limited (Adjusted R² ≈ 0.110; R² = 0.117), suggesting that BMI accounts for only a small share of the variation in protein consumption among endurance-sport populations. For further details, see the comparison table at the end of the section.
+
+
+
+As mentioned above - here’s the table on the regression models:
+
+Regression of Protein Consumption on Athlete BMI by Sport Type
+ 	All Sports	Strength Sports	Endurance Sports
+Predictors	Estimates	std. Error	p	Estimates	std. Error	p	Estimates	std. Error	p
+(Intercept)	-147.75	41.47	0.001	-93.08	21.42	<0.001	-116.61	35.64	0.001
+bmi	7.82	1.83	<0.001	5.10	0.89	<0.001	6.62	1.62	<0.001
+Observations	128	125	128
+R2 / R2 adjusted	0.126 / 0.119	0.210 / 0.204	0.117 / 0.110
+Discussion
+The results of the regression analyses provide partial confirmation of the initial hypothesis. At the aggregate level, there is indeed a significant positive association between national protein consumption per capita and the mean BMI of Olympic athletes. Countries where people consume more animal protein tend to send athletes with higher body mass indices, consistent with the idea that greater dietary protein availability supports muscle development and recovery. However, the explanatory power of this relationship is modest (Adjusted R² ≈ 0.12), suggesting that while protein consumption plays a role, many other cultural, economic, and physiological factors shape athlete BMI at the international level.
+
+When examining strength sports separately, the results again indicate a positive and statistically robust association. For every one-point increase in mean BMI, national protein intake rises by approximately 5.1 grams per person per day. The explanatory power improves compared to the all-sports model (Adjusted R² ≈ 0.20), supporting the assumption that protein availability is more relevant in sports where muscle mass and strength are decisive performance factors. This finding aligns with sports physiology literature, which emphasizes the higher protein requirements of strength athletes for hypertrophy, recovery, and adaptation.
+
+Contrary to expectations, the endurance sports model also shows a significant positive relationship. Here, each one-point increase in BMI corresponds to an average increase of about 6.6 grams of protein per person per day. While the association is statistically significant, the model explains little variance (Adjusted R² ≈ 0.11). This suggests that endurance athletes’ BMI is not strongly determined by national dietary protein levels and that other factors—such as training strategies, body composition optimization, and genetic predispositions—are likely more important. The positive direction of the effect, rather than the hypothesized negative relationship, indicates that even in endurance sports, countries with higher protein consumption do not necessarily send lighter athletes.
+
+Conclusion
+This analysis set out to test whether national levels of animal protein consumption are associated with the body mass index of Olympic athletes. Across all sports combined, the results demonstrate a significant positive relationship: countries with higher protein availability tend to field athletes with higher mean BMI values. While the association is statistically robust, the explanatory power is modest, indicating that protein consumption alone cannot fully account for cross-country differences in athlete body composition.
+
+Breaking the results down by sport type provides further insights. In strength sports, the relationship between BMI and protein consumption is stronger, with higher explanatory power, supporting the notion that protein-rich diets are especially relevant for sports in which muscle mass and strength directly influence performance. In endurance sports, however, the relationship also remains positive rather than negative, contrary to the initial hypothesis. This suggests that dietary protein may still contribute to the maintenance of lean body mass in endurance athletes, while other factors such as training methods, genetics, and sport-specific demands likely play a more decisive role in shaping their BMI.
+
+In sum, the findings partly confirm the proposed hypothesis by showing that protein consumption and athlete BMI are linked, particularly in strength sports. At the same time, the unexpected positive association in endurance sports highlights the complexity of nutritional, physiological, and cultural influences on athlete body composition at the Olympic level.
+
+Limitations & Outlook
+While the analysis provides meaningful insights, several limitations need to be acknowledged, alongside opportunities for further research:
+
+Total food consumption: This study focused only on animal protein intake, but overall caloric consumption and macronutrient distribution (e.g., carbohydrates, fats) may provide a stronger explanation of cross-country differences in athlete BMI.
+
+Grouping of sports: Sports were categorized broadly into strength and endurance groups. This approach simplifies reality, as many Olympic disciplines rely on a mix of power, endurance, and technical skill. Future analyses could refine the classification or treat each sport separately.
+
+Treatment of athletics: The “Athletics” category combines highly diverse events (e.g., marathon vs. shot put). More granular distinctions within athletics may improve model accuracy.
+
+Summer vs. Winter Olympics: The dataset combines both Olympic cycles. Differences in athlete pools, environmental conditions, and seasonal training structures may introduce bias that could be better accounted for in separate models.
+
+Model complexity: Only BMI and protein consumption were included in the regression. Incorporating additional predictors such as GDP, training infrastructure, or overall diet quality could increase explanatory power.
+
+Nonlinear effects and interactions: The models assume linearity between BMI and protein intake, but nonlinear patterns or interactions (e.g., thresholds where protein intake no longer increases BMI) may exist and warrant testing.
+
+Handling of missing data: Missing values were handled through listwise deletion and averaging. More sophisticated imputation techniques might yield more reliable estimates.
+
+Future research could extend this work by building multivariate models that integrate broader dietary, socioeconomic, and training-related factors. More nuanced sport-specific analyses and longitudinal data could also help clarify how nutrition interacts with body composition and performance at the Olympic level.
